@@ -1,4 +1,4 @@
-package com.example.flickrimages.data.clients
+package com.example.flickrimages.data.clients.hilt
 
 import dagger.Module
 import dagger.Provides
