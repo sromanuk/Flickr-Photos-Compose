@@ -134,6 +134,10 @@ class MainPhotosScreenViewModel @Inject constructor(
 
                 retryCounter++
             } while (retryCounter < MAX_RETRY && isSuccess.not())
+
+            if (currentValue.bitmapsMap[id] == null) {
+                emitEffect(UserError("Could not download image #$id"))
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Flickr Images</string>
     <string name="no_title">There is no title here</string>
+    <string name="no_photos">"There are no photos per this request"</string>
 </resources>
