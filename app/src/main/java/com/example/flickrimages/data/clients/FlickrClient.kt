@@ -7,6 +7,8 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import javax.inject.Inject
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.seconds
 
 class FlickrClient @Inject constructor(
     private val requestRetrier: RequestRetrier
@@ -21,14 +23,13 @@ class FlickrClient @Inject constructor(
                         parameter(PARAMETER_TAGS_KEY, tags.joinToString(separator = TAGS_URL_SEPARATOR))
                     }
                 }
-//            ktorClient.request(FLICKR_API_URL) {
-//                parameter(PARAMETER_FORMAT_KEY, PARAMETER_FORMAT_VALUE)
-//                parameter(PARAMETER_NO_JS_CALLBACK_KEY, PARAMETER_NO_JS_CALLBACK_VALUE)
-//                if (tags.isNotEmpty()) {
-//                    parameter(PARAMETER_TAGS_KEY, tags.joinToString(separator = TAGS_URL_SEPARATOR))
-//                }
-//            }
             }?.body<FlickrResponse>()?.items ?: emptyList()
+    }
+
+    suspend fun getImageDataFromURL(url: String): ByteArray? {
+        return requestRetrier.performRequest(initialDelay = Random.nextDouble().seconds) { ktorClient ->
+            ktorClient.get(url)
+        }?.body<ByteArray>()
     }
 
     private companion object {

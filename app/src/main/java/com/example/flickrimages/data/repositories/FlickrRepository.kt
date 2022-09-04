@@ -26,4 +26,6 @@ class FlickrRepository @Inject constructor(private val flickrClient: FlickrClien
     } else {
         null
     }
+
+    suspend fun getImageDataFromURL(url: String): ByteArray? = flickrClient.getImageDataFromURL(url)
 }
