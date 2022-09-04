@@ -3,19 +3,17 @@ package com.example.flickrimages.data.clients
 import com.example.flickrimages.data.clients.utils.RequestRetrier
 import com.example.flickrimages.model.FlickrPhoto
 import com.example.flickrimages.model.FlickrResponse
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import javax.inject.Inject
 
 class FlickrClient @Inject constructor(
-    private val ktorClient: HttpClient,
     private val requestRetrier: RequestRetrier
 ) {
 
     suspend fun getImages(tags: List<String>): List<FlickrPhoto> {
-        return requestRetrier.performRequest {
+        return requestRetrier.performRequest { ktorClient ->
                 ktorClient.get(FLICKR_API_URL) {
                     parameter(PARAMETER_FORMAT_KEY, PARAMETER_FORMAT_VALUE)
                     parameter(PARAMETER_NO_JS_CALLBACK_KEY, PARAMETER_NO_JS_CALLBACK_VALUE)
@@ -23,6 +21,13 @@ class FlickrClient @Inject constructor(
                         parameter(PARAMETER_TAGS_KEY, tags.joinToString(separator = TAGS_URL_SEPARATOR))
                     }
                 }
+//            ktorClient.request(FLICKR_API_URL) {
+//                parameter(PARAMETER_FORMAT_KEY, PARAMETER_FORMAT_VALUE)
+//                parameter(PARAMETER_NO_JS_CALLBACK_KEY, PARAMETER_NO_JS_CALLBACK_VALUE)
+//                if (tags.isNotEmpty()) {
+//                    parameter(PARAMETER_TAGS_KEY, tags.joinToString(separator = TAGS_URL_SEPARATOR))
+//                }
+//            }
             }?.body<FlickrResponse>()?.items ?: emptyList()
     }
 

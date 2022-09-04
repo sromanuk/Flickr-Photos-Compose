@@ -3,7 +3,8 @@ package com.example.flickrimages.ui.screens
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.flickrimages.ui.theme.FlickrImagesTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.flickrimages.ui.screens.main.MainPhotosScreenViewModel
 import com.example.flickrimages.ui.utils.DefaultScreenCanvas
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -11,7 +12,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 @RootNavGraph(start = true)
 @Destination
 @Composable
-fun Greeting() {
+fun MainPhotosScreen(viewModel: MainPhotosScreenViewModel = hiltViewModel()) {
     DefaultScreenCanvas {
         Text(text = "Hello!")
     }
@@ -20,7 +21,7 @@ fun Greeting() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    FlickrImagesTheme {
-        Greeting()
-    }
+//    FlickrImagesTheme {
+//        Greeting()
+//    }
 }

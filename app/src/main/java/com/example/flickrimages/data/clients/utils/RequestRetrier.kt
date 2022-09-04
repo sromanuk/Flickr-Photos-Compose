@@ -1,15 +1,18 @@
 package com.example.flickrimages.data.clients.utils
 
 import android.util.Log
+import io.ktor.client.HttpClient
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-class RequestRetrier @Inject constructor() {
+class RequestRetrier @Inject constructor(
+    private val ktorClient: HttpClient,
+) {
 
-    suspend fun performRequest(request: suspend () -> HttpResponse): HttpResponse? {
+    suspend fun performRequest(request: suspend (ktorClient: HttpClient) -> HttpResponse): HttpResponse? {
         var httpResponse: HttpResponse
         var errorCounter = 0
 
@@ -17,10 +20,10 @@ class RequestRetrier @Inject constructor() {
             delay((errorCounter * TIMEOUT_STEP).seconds)
 
             httpResponse = try {
-                request()
+                request(ktorClient)
             } catch (e: ClientRequestException) {
                 Log.d("RequestRetrier", "Request exception", e)
-                return request()
+                return request(ktorClient)
             }
 
             errorCounter++

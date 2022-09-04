@@ -1,10 +1,10 @@
 package com.example.flickrimages.model
 
 import com.example.flickrimages.model.utils.LocalDateTimeSerializer
-import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import java.time.LocalDateTime
 
 @Serializable
 data class FlickrPhoto(
@@ -17,7 +17,7 @@ data class FlickrPhoto(
     @Serializable(LocalDateTimeSerializer::class)
     val published: LocalDateTime,
     val author: String,
-    val author_is: String,
+    val author_id: String,
     @SerialName("tags")
     val tagsString: String
 ) {
@@ -32,6 +32,15 @@ data class FlickrPhoto(
 
     @Transient
     val fullSizePhotoURL = mediumSizePhotoURL?.replace(MEDIUM_FILE_SUFFIX, ".")
+
+    val authorStringFormatted: String
+        get() {
+            if (author.isBlank() || author.contains(' ').not()) return author
+            val (email, username) = author.split(" ")
+            val strippedUserName = username.replace("[^A-Za-z\\d ]".toRegex(), "")
+
+            return "$strippedUserName ($email)"
+        }
 
     private companion object {
         const val MEDIUM_FILE_SIZE = "m"

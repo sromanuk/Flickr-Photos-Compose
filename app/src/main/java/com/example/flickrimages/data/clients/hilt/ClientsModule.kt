@@ -5,12 +5,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -19,7 +21,13 @@ import kotlinx.serialization.json.Json
 class ClientsModule {
 
     @Provides
-    fun provideKtorClient() = HttpClient(CIO) {
+    fun provideKtorClient() = HttpClient(Android) {
+        engine {
+            // this: AndroidEngineConfig
+            connectTimeout = 100_000
+            socketTimeout = 100_000
+        }
+
         install(Logging) {
             logger = Logger.ANDROID
             level = LogLevel.ALL
@@ -33,6 +41,11 @@ class ClientsModule {
                     isLenient = true
                 }
             )
+        }
+
+        defaultRequest {
+            header("Content-Type", "application/json")
+            header("x-client-platform", "Android")
         }
     }
 }

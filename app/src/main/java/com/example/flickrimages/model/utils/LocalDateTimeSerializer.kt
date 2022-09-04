@@ -1,24 +1,29 @@
 package com.example.flickrimages.model.utils
 
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 internal object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
-    @OptIn(ExperimentalSerializationApi::class)
+
+    private const val DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXXXX"
+
     override val descriptor: SerialDescriptor
-        get() = SerialDescriptor("LocalDateTimeType", String.serializer().descriptor)
+        get() = PrimitiveSerialDescriptor("Date", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): LocalDateTime {
-        return decoder.decodeString().toLocalDateTime()
+        val formatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN, Locale.US)
+        return LocalDateTime.parse(decoder.decodeString(), formatter)
     }
 
     override fun serialize(encoder: Encoder, value: LocalDateTime) {
-        encoder.encodeString(value.toString())
+        val formatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN, Locale.US)
+        encoder.encodeString(formatter.format(value))
     }
 }
