@@ -1,4 +1,4 @@
-package com.example.flickrimages.ui.widgets
+package com.example.flickrimages.ui.screens.widgets
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke

@@ -1,6 +1,5 @@
 package com.example.flickrimages.data.clients
 
-import android.util.Log
 import com.example.flickrimages.data.clients.utils.RequestRetrier
 import com.example.flickrimages.model.FlickrPhoto
 import com.example.flickrimages.model.FlickrResponse
@@ -31,7 +30,7 @@ class FlickrClient @Inject constructor(
         val body =  requestRetrier.performRequest(initialDelay = Random.nextDouble().seconds) { ktorClient ->
             ktorClient.get(url)
         }?.body<ByteArray>()
-        Log.d("FlickrClient", ">>> body received, ${body?.size}")
+
         return body
     }
 

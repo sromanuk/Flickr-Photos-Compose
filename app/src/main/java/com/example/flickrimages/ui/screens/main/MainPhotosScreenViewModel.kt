@@ -1,6 +1,5 @@
 package com.example.flickrimages.ui.screens.main
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.flickrimages.ui.utils.BaseViewModel
 import com.example.flickrimages.ui.utils.UserError
@@ -55,9 +54,12 @@ class MainPhotosScreenViewModel @Inject constructor(
 
         viewModelScope.launch {
             getImagesBitmapsUseCase.resultFlow.collectLatest {
-                Log.d("MainPhotosScreenViewModel", ">>> recieved bitmap for ${it.imageIndex}")
                 currentStateValue.bitmapsMap[it.imageIndex] = it.bitmap
                 setState { copy(dummyUpdateCounter = dummyUpdateCounter + 1) }
+
+                if (it.bitmap == null) {
+                    emitEffect(UserError("Could not download image #${it.imageIndex}"))
+                }
             }
         }
     }
@@ -130,7 +132,7 @@ class MainPhotosScreenViewModel @Inject constructor(
             }
         }
 
-        // TODO: async way does not work because of Flickr's limitation on requests. Need to move to sync way
+        // Async way does not work because of Flickr's limitation on requests. Need to move to sync way
 //        fetchingScope?.launch {
 //            delay(Random.nextDouble().seconds)
 //

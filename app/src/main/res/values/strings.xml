@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Flickr Images</string>
     <string name="no_title">There is no title here</string>
-    <string name="no_photos">"There are no photos per this request"</string>
+    <string name="no_photos">There are no photos per this request</string>
+    <string name="created_at">Photo taken at</string>
+    <string name="published_at">Photo published at</string>
+    <string name="author_info">Author:</string>
+    <string name="tags_list">Tags:</string>
+    <string name="go_to_flickr">Go To Flickr</string>
 </resources>

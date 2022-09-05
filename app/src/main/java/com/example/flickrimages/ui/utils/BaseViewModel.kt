@@ -62,6 +62,7 @@ open class BaseViewModel<STATE : State, ACTION, EFFECT>(initialState: STATE) : V
         innerState.update(reducer)
     }
 
+    @Suppress("UNCHECKED_CAST")
     protected suspend fun <T> performLoadingOperation(operation: suspend () -> T): T {
         setState { updateCommonState(loading = true) as STATE }
         val operationResult = operation()
@@ -70,6 +71,7 @@ open class BaseViewModel<STATE : State, ACTION, EFFECT>(initialState: STATE) : V
         return operationResult
     }
 
+    @Suppress("UNCHECKED_CAST")
     protected suspend fun <T> performRefreshOperation(
         dismissRefreshStateTimeout: Duration? = null,
         operation: suspend () -> T

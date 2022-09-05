@@ -2,7 +2,6 @@ package com.example.flickrimages.use_cases
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.delay
@@ -35,10 +34,6 @@ class GetImagesBitmapsUseCase @Inject constructor(
 
                         val byteArray = getImageByteArrayUseCase(dataForDownload.imageURL)
                         byteArray?.inputStream()?.let {
-                            Log.d(
-                                "GetImagesBitmapsUseCase",
-                                ">>> received bite array stream for image #${dataForDownload.imageID}"
-                            )
                             val bitmap = BitmapFactory.decodeStream(byteArray.inputStream())
                             _resultFlow.emit(DownloadResult(dataForDownload.imageID, bitmap))
                         }
