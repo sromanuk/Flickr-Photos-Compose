@@ -18,7 +18,7 @@ open class BaseViewModel<STATE : State, ACTION, EFFECT>(initialState: STATE) : V
     private val innerState = MutableStateFlow(initialState)
     val currentState = innerState as StateFlow<STATE>
 
-    protected val currentValue
+    protected val currentStateValue
         get() = innerState.value
 
     private val actionSink = MutableSharedFlow<ACTION>(
@@ -84,10 +84,6 @@ open class BaseViewModel<STATE : State, ACTION, EFFECT>(initialState: STATE) : V
         setState { updateCommonState(refreshing = false) as STATE }
 
         return operationResult
-    }
-
-    companion object {
-        const val WHILE_SUBSCRIBED_TIMEOUT = 5000L
     }
 }
 

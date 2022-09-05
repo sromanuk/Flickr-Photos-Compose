@@ -10,7 +10,7 @@ data class MainPhotosScreenState(
     val tagsSearched: String = "",
     val photos: List<FlickrPhoto> = emptyList(),
     val viewSelector: ViewSelection = ViewSelection.List,
-    val bitmapsMap: HashMap<Int, Bitmap> = HashMap(),
+    val bitmapsMap: HashMap<Int, Bitmap?> = HashMap(),
     val dummyUpdateCounter: Int = 0
 ): State() {
     override fun updateCommonState(loading: Boolean, refreshing: Boolean) =
